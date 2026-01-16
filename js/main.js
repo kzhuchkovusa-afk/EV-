@@ -78,17 +78,39 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // ===================================
-// Contact Form Handling with Google Sheets Integration
+// Contact Form Handling with EmailJS
 // ===================================
 
-// ⚠️ ВАЖНО: ЗАМЕНИТЕ ЭТУ СТРОКУ НА ВАШ GOOGLE SCRIPT URL
-const GOOGLE_SCRIPT_URL = 'PASTE_YOUR_GOOGLE_SCRIPT_URL_HERE';
+// ⚠️ IMPORTANT: Replace these values with your EmailJS credentials
+// Sign up at https://www.emailjs.com/ to get your keys
+const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';  // e.g., 'service_abc123'
+const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID'; // e.g., 'template_xyz789'
+const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';   // e.g., 'user_ABC123xyz'
+
+// Optional: Google Sheets integration (if you want both email and sheets)
+const GOOGLE_SCRIPT_URL = ''; // Leave empty if not using Google Sheets
 
 const contactForm = document.getElementById('contactForm');
 
 if (contactForm) {
     contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        
+        // Validate form
+        const emailInput = document.getElementById('email');
+        const phoneInput = document.getElementById('phone');
+        
+        if (!validateEmail(emailInput.value)) {
+            showNotification('Please enter a valid email address', 'error');
+            emailInput.focus();
+            return;
+        }
+        
+        if (!validatePhone(phoneInput.value)) {
+            showNotification('Please enter a valid phone number (at least 10 digits)', 'error');
+            phoneInput.focus();
+            return;
+        }
         
         // Disable submit button to prevent double submission
         const submitButton = contactForm.querySelector('button[type="submit"]');
@@ -108,30 +130,44 @@ if (contactForm) {
         // Log to console for debugging
         console.log('Form submitted:', formData);
         
-        // Check if Google Script URL is configured
-        if (GOOGLE_SCRIPT_URL === 'PASTE_YOUR_GOOGLE_SCRIPT_URL_HERE') {
-            showNotification('Please configure Google Script URL in js/main.js', 'error');
+        // Check if EmailJS is configured
+        if (EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
+            showNotification('⚠️ EmailJS not configured. Please set up EmailJS credentials in js/main.js', 'error');
             submitButton.disabled = false;
             submitButton.innerHTML = originalButtonText;
+            console.error('EmailJS Configuration Missing:', {
+                message: 'Please configure EmailJS credentials',
+                instructions: 'See EMAILJS_SETUP.md for setup instructions'
+            });
             return;
         }
         
         try {
-            // Send data to Google Sheets
-            const response = await fetch(GOOGLE_SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors', // Important for Google Apps Script
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData)
-            });
+            // Initialize EmailJS
+            emailjs.init(EMAILJS_PUBLIC_KEY);
             
-            // Note: With no-cors mode, we can't read the response
-            // So we assume success if no error was thrown
+            // Prepare template parameters
+            const templateParams = {
+                from_name: formData.name,
+                from_email: formData.email,
+                from_phone: formData.phone,
+                from_address: formData.address || 'Not provided',
+                message: formData.message,
+                to_email: 'floridabuildgroup@gmail.com',
+                reply_to: formData.email
+            };
+            
+            // Send email via EmailJS
+            const response = await emailjs.send(
+                EMAILJS_SERVICE_ID,
+                EMAILJS_TEMPLATE_ID,
+                templateParams
+            );
+            
+            console.log('EmailJS Response:', response);
             
             // Show success message
-            showNotification('Thank you! We\'ll contact you within 24 hours.', 'success');
+            showNotification('✅ Thank you! We\'ll contact you within 24 hours.', 'success');
             
             // Reset form
             contactForm.reset();
@@ -156,9 +192,35 @@ if (contactForm) {
                 console.log('Google Analytics: Form submission tracked');
             }
             
+            // Optional: Also send to Google Sheets if configured
+            if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== '') {
+                try {
+                    await fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                    console.log('Data also sent to Google Sheets');
+                } catch (sheetError) {
+                    console.warn('Google Sheets sync failed:', sheetError);
+                }
+            }
+            
         } catch (error) {
             console.error('Error submitting form:', error);
-            showNotification('Something went wrong. Please try again or call us directly.', 'error');
+            
+            // Show user-friendly error message
+            let errorMessage = 'Something went wrong. Please try again or call us directly.';
+            
+            if (error.text) {
+                // EmailJS specific error
+                errorMessage = `Failed to send: ${error.text}`;
+            }
+            
+            showNotification(errorMessage, 'error');
         } finally {
             // Re-enable submit button
             submitButton.disabled = false;

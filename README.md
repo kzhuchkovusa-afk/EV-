@@ -209,11 +209,41 @@ fbq('track', 'Lead', {
 
 ---
 
-## 🔌 Google Sheets Integration
+## 📧 Email Integration (PRIMARY)
 
-### ✅ Form submissions are now integrated with Google Sheets!
+### ✅ EmailJS Integration - Direct Email Notifications
 
-All lead data is automatically saved to your Google Spreadsheet. See setup instructions in:
+**All form submissions are sent directly to: floridabuildgroup@gmail.com**
+
+**Setup Required (5 minutes):**
+1. Sign up at [EmailJS.com](https://www.emailjs.com/)
+2. Connect your Gmail account (floridabuildgroup@gmail.com)
+3. Create email template
+4. Copy credentials to `js/main.js` (lines 6-8)
+
+**See detailed guide**: `EMAILJS_SETUP.md`
+
+**Benefits:**
+- ✅ Instant email notifications
+- ✅ No backend required
+- ✅ 200 free emails/month
+- ✅ Reliable delivery
+- ✅ Professional templates
+
+**Configuration:**
+```javascript
+const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';
+const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';
+```
+
+---
+
+## 🔌 Google Sheets Integration (OPTIONAL)
+
+### Backup leads to Google Sheets (optional secondary integration)
+
+All lead data can also be saved to your Google Spreadsheet. See setup instructions in:
 - **English**: `GOOGLE_SHEETS_SETUP.md`
 - **Русский**: `GOOGLE_SHEETS_QUICK_START_RU.md`
 
@@ -223,11 +253,9 @@ All lead data is automatically saved to your Google Spreadsheet. See setup instr
 2. Create Google Apps Script (Extensions → Apps Script)
 3. Deploy as Web App (Anyone access)
 4. Copy the deployment URL
-5. Paste URL in `js/main.js` line 5: `const GOOGLE_SCRIPT_URL = 'your-url-here'`
+5. Paste URL in `js/main.js` line 11: `const GOOGLE_SCRIPT_URL = 'your-url-here'`
 
-### Optional: Email Notifications
-
-Uncomment the MailApp section in the Apps Script to receive email alerts for each new lead.
+**Note:** Google Sheets is optional. EmailJS handles the primary email delivery.
 
 ### Data Format:
 
@@ -238,25 +266,6 @@ Each form submission creates a new row with:
 - Email  
 - Address (optional)
 - Message (optional)
-
----
-
-## 🔌 CRM Integration (Alternative)
-
-Form submissions are currently logged to console. To integrate with your CRM:
-
-1. Open `js/main.js`
-2. Find the form submission handler (line ~50-70)
-3. Replace console.log with your API endpoint
-
-Example:
-```javascript
-fetch('/api/submit-lead', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(formData)
-})
-```
 
 ## 📊 Conversion Optimization
 
@@ -290,14 +299,15 @@ fetch('/api/submit-lead', {
 
 ## 📈 Next Steps for Launch
 
-1. **Content Review**: Verify all contact information
-2. **CRM Setup**: Integrate form submission endpoint
-3. **Analytics**: Add Google Analytics tracking code
-4. **Testing**: Test form submission on all devices
+1. **✅ EMAIL SETUP (REQUIRED)**: Configure EmailJS credentials in `js/main.js` - See `EMAILJS_SETUP.md`
+2. **Content Review**: Verify all contact information
+3. **Testing**: Test form submission and verify email delivery
+4. **Analytics**: Verify Facebook Pixel tracking (optional: add Google Analytics)
 5. **SEO**: Add meta descriptions and Open Graph tags
 6. **Domain**: Connect custom domain
 7. **SSL**: Ensure HTTPS is enabled
-8. **Launch**: Deploy via Publish tab
+8. **Optional**: Set up Google Sheets backup - See `GOOGLE_SHEETS_SETUP.md`
+9. **Launch**: Deploy via hosting platform
 
 ## 📝 Content Notes
 

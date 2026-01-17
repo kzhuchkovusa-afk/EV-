@@ -130,21 +130,92 @@ ul {
     border-radius: var(--border-radius);
     border: 2px solid transparent;
     cursor: pointer;
-    transition: var(--transition);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     white-space: nowrap;
+    position: relative;
+    overflow: hidden;
 }
 
+/* Enhanced Primary Button with Pulse Animation */
 .btn-primary {
     background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
     color: var(--bg-white);
-    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+    box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4),
+                0 4px 12px rgba(255, 107, 53, 0.3);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    animation: pulse-glow 2s ease-in-out infinite;
 }
 
+/* Pulse Glow Animation */
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4),
+                    0 4px 12px rgba(255, 107, 53, 0.3);
+    }
+    50% {
+        box-shadow: 0 8px 24px rgba(255, 107, 53, 0.5),
+                    0 4px 16px rgba(255, 107, 53, 0.4),
+                    0 0 30px rgba(255, 107, 53, 0.3);
+    }
+}
+
+/* Ripple Effect */
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-primary:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* Enhanced Hover State */
 .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 28px rgba(255, 107, 53, 0.5),
+                0 8px 20px rgba(255, 107, 53, 0.4),
+                0 0 40px rgba(255, 107, 53, 0.3);
+    animation: none; /* Stop pulse on hover */
 }
 
+/* Active/Click State */
+.btn-primary:active {
+    transform: translateY(-1px) scale(0.98);
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
+}
+
+/* Icon Animation inside Button */
+.btn-primary i {
+    transition: transform 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.btn-primary:hover i {
+    transform: scale(1.2) rotate(5deg);
+}
+
+/* Larger Size Variant */
+.btn-lg {
+    padding: 1.25rem 2.5rem;
+    font-size: 1.1875rem;
+    font-weight: 700;
+    box-shadow: 0 10px 24px rgba(255, 107, 53, 0.4),
+                0 6px 16px rgba(255, 107, 53, 0.3);
+}
+
+/* Outline Button */
 .btn-outline {
     background: transparent;
     color: var(--text-dark);
@@ -155,11 +226,6 @@ ul {
     background: var(--bg-light);
     border-color: var(--primary-color);
     color: var(--primary-color);
-}
-
-.btn-lg {
-    padding: 1.125rem 2.25rem;
-    font-size: 1.125rem;
 }
 
 .btn-block {

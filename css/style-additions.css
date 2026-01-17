@@ -929,3 +929,114 @@
         min-height: 600px !important;
     }
 }
+
+/* ===================================
+   Enhanced CTA Buttons - Super Visible
+   =================================== */
+
+/* Attention-Grabbing CTA Button */
+.btn-cta-enhanced {
+    background: linear-gradient(135deg, #FF6B35 0%, #E85A2A 50%, #FF6B35 100%);
+    background-size: 200% auto;
+    color: white;
+    font-weight: 800;
+    font-size: 1.125rem;
+    padding: 1.25rem 2.75rem;
+    border-radius: 50px;
+    box-shadow: 0 10px 30px rgba(255, 107, 53, 0.5),
+                0 6px 20px rgba(255, 107, 53, 0.4),
+                0 0 50px rgba(255, 107, 53, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    animation: shimmer 3s ease-in-out infinite, float 3s ease-in-out infinite;
+    position: relative;
+    overflow: hidden;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Shimmer Animation */
+@keyframes shimmer {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* Floating Animation */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Shine Effect */
+.btn-cta-enhanced::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 70%
+    );
+    transform: rotate(45deg);
+    animation: shine 3s ease-in-out infinite;
+}
+
+@keyframes shine {
+    0% {
+        left: -200%;
+    }
+    50%, 100% {
+        left: 200%;
+    }
+}
+
+/* Enhanced Hover */
+.btn-cta-enhanced:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(255, 107, 53, 0.6),
+                0 10px 30px rgba(255, 107, 53, 0.5),
+                0 0 60px rgba(255, 107, 53, 0.3);
+    animation: none;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Active State */
+.btn-cta-enhanced:active {
+    transform: translateY(-2px) scale(1.02);
+}
+
+/* Icon inside Enhanced CTA */
+.btn-cta-enhanced i {
+    animation: pulse-icon 1.5s ease-in-out infinite;
+    display: inline-block;
+}
+
+@keyframes pulse-icon {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+}
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+    .btn-cta-enhanced {
+        font-size: 1rem;
+        padding: 1.125rem 2rem;
+        width: 100%;
+        justify-content: center;
+    }
+}

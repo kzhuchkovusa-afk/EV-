@@ -12,9 +12,6 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
     
-    <!-- EmailJS -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    
     <!-- Stylesheet -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/style-additions.css">
@@ -761,40 +758,16 @@
                 </div>
 
                 <div class="contact__form-wrapper">
-                    <form class="contact__form" id="contactForm">
-                        <h3 class="form__title">Request Free Inspection</h3>
-                        
-                        <div class="form__group">
-                            <label for="name" class="form__label">Full Name *</label>
-                            <input type="text" id="name" name="name" class="form__input" placeholder="John Smith" required>
-                        </div>
-
-                        <div class="form__group">
-                            <label for="phone" class="form__label">Phone Number *</label>
-                            <input type="tel" id="phone" name="phone" class="form__input" placeholder="(123) 456-7890" required>
-                        </div>
-
-                        <div class="form__group">
-                            <label for="email" class="form__label">Email Address *</label>
-                            <input type="email" id="email" name="email" class="form__input" placeholder="john@example.com" required>
-                        </div>
-
-                        <div class="form__group">
-                            <label for="address" class="form__label">Property Address</label>
-                            <input type="text" id="address" name="address" class="form__input" placeholder="Miami, FL">
-                        </div>
-
-                        <div class="form__group">
-                            <label for="message" class="form__label">Project Details</label>
-                            <textarea id="message" name="message" class="form__input form__textarea" rows="4" placeholder="Tell us about your painting project..."></textarea>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary btn-block">
-                            <i class="fas fa-paper-plane"></i> Request Free Inspection
-                        </button>
-
-                        <p class="form__note">We respect your privacy and will never share your information.</p>
-                    </form>
+                    <!-- Bitrix24 CRM Form -->
+                    <div class="bitrix24-form-container">
+                        <script data-b24-form="inline/2/timm7h" data-skip-moving="true">
+                        (function(w,d,u){
+                        var s=d.createElement('script');s.async=true;s.src=u+'?'+(Date.now()/180000|0);
+                        var h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(s,h);
+                        })(window,document,'https://cdn.bitrix24.com/b36447169/crm/form/loader_2.js');
+                        </script>
+                    </div>
+                    <!-- End Bitrix24 CRM Form -->
                 </div>
             </div>
         </div>

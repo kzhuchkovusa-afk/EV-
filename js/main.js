@@ -78,156 +78,21 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // ===================================
-// Contact Form Handling with EmailJS
+// Contact Form Handling - Bitrix24 CRM Integration
 // ===================================
 
-// ⚠️ IMPORTANT: Replace these values with your EmailJS credentials
-// Sign up at https://www.emailjs.com/ to get your keys
-const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';  // e.g., 'service_abc123'
-const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID'; // e.g., 'template_xyz789'
-const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';   // e.g., 'user_ABC123xyz'
+// ℹ️ Contact form is now handled by Bitrix24 CRM
+// The form is embedded via Bitrix24 widget and automatically sends leads to your CRM
+// No additional configuration needed - form is fully functional out of the box
 
-// Optional: Google Sheets integration (if you want both email and sheets)
-const GOOGLE_SCRIPT_URL = ''; // Leave empty if not using Google Sheets
+// Bitrix24 Account: b36447169
+// Form ID: inline/2/timm7h
 
-const contactForm = document.getElementById('contactForm');
+// All form submissions will automatically appear in your Bitrix24 CRM dashboard
+// Access your CRM at: https://b36447169.bitrix24.com/
 
-if (contactForm) {
-    contactForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        // Validate form
-        const emailInput = document.getElementById('email');
-        const phoneInput = document.getElementById('phone');
-        
-        if (!validateEmail(emailInput.value)) {
-            showNotification('Please enter a valid email address', 'error');
-            emailInput.focus();
-            return;
-        }
-        
-        if (!validatePhone(phoneInput.value)) {
-            showNotification('Please enter a valid phone number (at least 10 digits)', 'error');
-            phoneInput.focus();
-            return;
-        }
-        
-        // Disable submit button to prevent double submission
-        const submitButton = contactForm.querySelector('button[type="submit"]');
-        const originalButtonText = submitButton.innerHTML;
-        submitButton.disabled = true;
-        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-        
-        // Get form data
-        const formData = {
-            name: document.getElementById('name').value,
-            phone: document.getElementById('phone').value,
-            email: document.getElementById('email').value,
-            address: document.getElementById('address') ? document.getElementById('address').value : '',
-            message: document.getElementById('message').value
-        };
-        
-        // Log to console for debugging
-        console.log('Form submitted:', formData);
-        
-        // Check if EmailJS is configured
-        if (EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
-            showNotification('⚠️ EmailJS not configured. Please set up EmailJS credentials in js/main.js', 'error');
-            submitButton.disabled = false;
-            submitButton.innerHTML = originalButtonText;
-            console.error('EmailJS Configuration Missing:', {
-                message: 'Please configure EmailJS credentials',
-                instructions: 'See EMAILJS_SETUP.md for setup instructions'
-            });
-            return;
-        }
-        
-        try {
-            // Initialize EmailJS
-            emailjs.init(EMAILJS_PUBLIC_KEY);
-            
-            // Prepare template parameters
-            const templateParams = {
-                from_name: formData.name,
-                from_email: formData.email,
-                from_phone: formData.phone,
-                from_address: formData.address || 'Not provided',
-                message: formData.message,
-                to_email: 'floridabuildgroup@gmail.com',
-                reply_to: formData.email
-            };
-            
-            // Send email via EmailJS
-            const response = await emailjs.send(
-                EMAILJS_SERVICE_ID,
-                EMAILJS_TEMPLATE_ID,
-                templateParams
-            );
-            
-            console.log('EmailJS Response:', response);
-            
-            // Show success message
-            showNotification('✅ Thank you! We\'ll contact you within 24 hours.', 'success');
-            
-            // Reset form
-            contactForm.reset();
-            
-            // Track Facebook Pixel Lead event
-            if (typeof fbq !== 'undefined') {
-                fbq('track', 'Lead', {
-                    content_name: 'Free Inspection Request',
-                    content_category: 'Turnkey Painting',
-                    value: 0,
-                    currency: 'USD'
-                });
-                console.log('Facebook Pixel: Lead event tracked');
-            }
-            
-            // Track conversion with Google Analytics
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'form_submission', {
-                    'event_category': 'Lead',
-                    'event_label': 'Free Inspection Request'
-                });
-                console.log('Google Analytics: Form submission tracked');
-            }
-            
-            // Optional: Also send to Google Sheets if configured
-            if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== '') {
-                try {
-                    await fetch(GOOGLE_SCRIPT_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(formData)
-                    });
-                    console.log('Data also sent to Google Sheets');
-                } catch (sheetError) {
-                    console.warn('Google Sheets sync failed:', sheetError);
-                }
-            }
-            
-        } catch (error) {
-            console.error('Error submitting form:', error);
-            
-            // Show user-friendly error message
-            let errorMessage = 'Something went wrong. Please try again or call us directly.';
-            
-            if (error.text) {
-                // EmailJS specific error
-                errorMessage = `Failed to send: ${error.text}`;
-            }
-            
-            showNotification(errorMessage, 'error');
-        } finally {
-            // Re-enable submit button
-            submitButton.disabled = false;
-            submitButton.innerHTML = originalButtonText;
-        }
-    });
-}
+console.log('%c✅ Bitrix24 CRM Integration Active', 'font-size: 14px; font-weight: bold; color: #10b981;');
+console.log('%cForm submissions will be sent to your Bitrix24 CRM', 'font-size: 12px; color: #5A6C7D;');
 
 // ===================================
 // Notification System
@@ -322,7 +187,7 @@ style.textContent = `
 document.head.appendChild(style);
 
 // ===================================
-// Form Validation
+// Form Validation (kept for other potential forms)
 // ===================================
 function validateEmail(email) {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -332,30 +197,6 @@ function validateEmail(email) {
 function validatePhone(phone) {
     const re = /^[\d\s\-\+\(\)]+$/;
     return re.test(phone) && phone.replace(/\D/g, '').length >= 10;
-}
-
-// Add real-time validation
-if (contactForm) {
-    const emailInput = document.getElementById('email');
-    const phoneInput = document.getElementById('phone');
-    
-    emailInput.addEventListener('blur', () => {
-        if (emailInput.value && !validateEmail(emailInput.value)) {
-            emailInput.style.borderColor = '#ef4444';
-            showNotification('Please enter a valid email address', 'error');
-        } else {
-            emailInput.style.borderColor = '';
-        }
-    });
-    
-    phoneInput.addEventListener('blur', () => {
-        if (phoneInput.value && !validatePhone(phoneInput.value)) {
-            phoneInput.style.borderColor = '#ef4444';
-            showNotification('Please enter a valid phone number', 'error');
-        } else {
-            phoneInput.style.borderColor = '';
-        }
-    });
 }
 
 // ===================================

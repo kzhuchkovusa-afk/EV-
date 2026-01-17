@@ -209,33 +209,49 @@ fbq('track', 'Lead', {
 
 ---
 
-## 📧 Email Integration (PRIMARY)
+## 🏢 Bitrix24 CRM Integration (ACTIVE)
 
-### ✅ EmailJS Integration - Direct Email Notifications
+### ✅ Bitrix24 CRM - Professional Lead Management System
 
-**All form submissions are sent directly to: floridabuildgroup@gmail.com**
+**All form submissions are automatically sent to your Bitrix24 CRM**
 
-**Setup Required (5 minutes):**
-1. Sign up at [EmailJS.com](https://www.emailjs.com/)
-2. Connect your Gmail account (floridabuildgroup@gmail.com)
-3. Create email template
-4. Copy credentials to `js/main.js` (lines 6-8)
-
-**See detailed guide**: `EMAILJS_SETUP.md`
+**Bitrix24 Account:** b36447169  
+**Form ID:** inline/2/timm7h  
+**CRM Dashboard:** https://b36447169.bitrix24.com/
 
 **Benefits:**
-- ✅ Instant email notifications
-- ✅ No backend required
-- ✅ 200 free emails/month
-- ✅ Reliable delivery
-- ✅ Professional templates
+- ✅ **Professional CRM** - Full-featured customer relationship management
+- ✅ **Automatic lead capture** - All form submissions instantly in your CRM
+- ✅ **Lead tracking** - Monitor lead status, conversations, and deals
+- ✅ **Task management** - Create tasks and reminders for follow-ups
+- ✅ **Team collaboration** - Share leads and assign to team members
+- ✅ **Mobile app** - Manage leads on the go
+- ✅ **Email integration** - Send emails directly from CRM
+- ✅ **Analytics** - Track conversion rates and sales funnel
+- ✅ **No setup required** - Form is ready to use immediately
 
-**Configuration:**
-```javascript
-const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';
-const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
-const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';
-```
+**How it works:**
+1. Customer fills out the form on your website
+2. Lead instantly appears in your Bitrix24 CRM
+3. You receive notification (email/mobile app)
+4. Manage and respond to leads from CRM dashboard
+5. Track entire customer journey in one place
+
+**Access your CRM:**
+- Web: https://b36447169.bitrix24.com/
+- Mobile: Download Bitrix24 app (iOS/Android)
+
+---
+
+## 📧 Email Integration (DEPRECATED - Replaced by Bitrix24)
+
+### ~~EmailJS Integration~~ - No longer in use
+
+**⚠️ NOTE:** EmailJS integration has been replaced with Bitrix24 CRM for better lead management.
+
+If you still want to use EmailJS alongside Bitrix24, see:
+- **Setup Guide**: `EMAILJS_SETUP.md`
+- **Russian Guide**: `EMAILJS_SETUP_RU.md`
 
 ---
 
@@ -299,15 +315,17 @@ Each form submission creates a new row with:
 
 ## 📈 Next Steps for Launch
 
-1. **✅ EMAIL SETUP (REQUIRED)**: Configure EmailJS credentials in `js/main.js` - See `EMAILJS_SETUP.md`
-2. **Content Review**: Verify all contact information
-3. **Testing**: Test form submission and verify email delivery
-4. **Analytics**: Verify Facebook Pixel tracking (optional: add Google Analytics)
-5. **SEO**: Add meta descriptions and Open Graph tags
-6. **Domain**: Connect custom domain
-7. **SSL**: Ensure HTTPS is enabled
-8. **Optional**: Set up Google Sheets backup - See `GOOGLE_SHEETS_SETUP.md`
-9. **Launch**: Deploy via hosting platform
+1. **✅ BITRIX24 CRM READY**: Form is fully integrated and working - no setup needed!
+2. **Access your CRM**: Login to https://b36447169.bitrix24.com/ to view leads
+3. **Content Review**: Verify all contact information on the website
+4. **Testing**: Test form submission and verify lead appears in Bitrix24
+5. **Mobile App**: Download Bitrix24 app for on-the-go lead management
+6. **Team Setup**: Add team members to Bitrix24 (if applicable)
+7. **Analytics**: Verify Facebook Pixel tracking (optional: add Google Analytics)
+8. **SEO**: Add meta descriptions and Open Graph tags
+9. **Domain**: Connect custom domain
+10. **SSL**: Ensure HTTPS is enabled
+11. **Launch**: Deploy to production hosting
 
 ## 📝 Content Notes
 

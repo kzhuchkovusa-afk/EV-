@@ -95,6 +95,118 @@ console.log('%c✅ Bitrix24 CRM Integration Active', 'font-size: 14px; font-weig
 console.log('%cForm submissions will be sent to your Bitrix24 CRM', 'font-size: 12px; color: #5A6C7D;');
 
 // ===================================
+// Facebook Pixel Lead Tracking for Bitrix24 Form
+// ===================================
+
+// Listen for Bitrix24 form submission success
+window.addEventListener('message', function(event) {
+    // Check if message is from Bitrix24 form
+    if (event.data && event.data.action === 'submit' && event.data.form) {
+        // Check if it's our form (inline/2/timm7h)
+        if (event.data.form.id === '2' || event.data.form.name === 'inline/2/timm7h') {
+            console.log('%c🎯 Bitrix24 Form Submitted!', 'font-size: 14px; font-weight: bold; color: #10b981;');
+            
+            // Track Facebook Pixel Lead event
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'Lead', {
+                    content_name: 'Free Inspection Request',
+                    content_category: 'Turnkey Painting',
+                    value: 0,
+                    currency: 'USD',
+                    source: 'bitrix24_crm_form'
+                });
+                console.log('%c✅ Facebook Pixel Lead Event Tracked!', 'font-size: 12px; font-weight: bold; color: #10b981;');
+                console.log('Event Details:', {
+                    content_name: 'Free Inspection Request',
+                    content_category: 'Turnkey Painting',
+                    source: 'bitrix24_crm_form'
+                });
+            } else {
+                console.warn('⚠️ Facebook Pixel not loaded - Lead event not tracked');
+            }
+            
+            // Track with Google Analytics if available
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'form_submission', {
+                    'event_category': 'Lead',
+                    'event_label': 'Free Inspection Request',
+                    'value': 1
+                });
+                console.log('%c✅ Google Analytics Event Tracked!', 'font-size: 12px; color: #4285f4;');
+            }
+        }
+    }
+});
+
+// Alternative: Listen for Bitrix24 CRM form specific event
+// Bitrix24 forms can trigger custom events
+document.addEventListener('b24:form:submit', function(event) {
+    console.log('%c🎯 Bitrix24 Form Submit Event Detected!', 'font-size: 14px; font-weight: bold; color: #10b981;');
+    
+    // Track Facebook Pixel Lead event
+    if (typeof fbq !== 'undefined') {
+        fbq('track', 'Lead', {
+            content_name: 'Free Inspection Request',
+            content_category: 'Turnkey Painting',
+            value: 0,
+            currency: 'USD',
+            source: 'bitrix24_crm_form'
+        });
+        console.log('%c✅ Facebook Pixel Lead Event Tracked (via b24:form:submit)!', 'font-size: 12px; font-weight: bold; color: #10b981;');
+    }
+});
+
+// Fallback: Monitor for Bitrix24 success message/redirect
+// Some Bitrix24 forms show success message or redirect
+const checkBitrix24Success = () => {
+    // Check for success message in Bitrix24 iframe
+    const bitrix24Container = document.querySelector('.bitrix24-form-container');
+    if (bitrix24Container) {
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                // Check if success message appeared
+                const successElement = bitrix24Container.querySelector('[class*="success"]') || 
+                                     bitrix24Container.querySelector('[class*="thank"]');
+                
+                if (successElement && successElement.offsetParent !== null) {
+                    console.log('%c🎯 Bitrix24 Success Message Detected!', 'font-size: 14px; font-weight: bold; color: #10b981;');
+                    
+                    // Track Facebook Pixel Lead event
+                    if (typeof fbq !== 'undefined') {
+                        fbq('track', 'Lead', {
+                            content_name: 'Free Inspection Request',
+                            content_category: 'Turnkey Painting',
+                            value: 0,
+                            currency: 'USD',
+                            source: 'bitrix24_crm_form'
+                        });
+                        console.log('%c✅ Facebook Pixel Lead Event Tracked (via mutation observer)!', 'font-size: 12px; font-weight: bold; color: #10b981;');
+                    }
+                    
+                    // Stop observing after tracking
+                    observer.disconnect();
+                }
+            });
+        });
+        
+        // Start observing
+        observer.observe(bitrix24Container, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['class', 'style']
+        });
+    }
+};
+
+// Initialize Bitrix24 success tracking when page loads
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', checkBitrix24Success);
+} else {
+    checkBitrix24Success();
+}
+
+// ===================================
 // Notification System
 // ===================================
 function showNotification(message, type = 'success') {

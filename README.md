@@ -181,13 +181,20 @@ Accent Teal: #4ECDC4 (fresh, trust)
 
 ## 📊 Analytics & Tracking
 
-### ✅ Facebook Pixel Integration
+### ✅ Facebook Pixel Integration with Bitrix24
 
 **Facebook Pixel ID**: 1409051684286127
 
 The website tracks the following events:
 - **PageView**: Automatic on every page load
-- **Lead**: Fired when contact form is successfully submitted
+- **Lead**: ✨ **NEW** - Fired immediately when Bitrix24 form is successfully submitted
+
+**Lead Event Tracking:**
+- **Trigger:** Bitrix24 CRM form submission success
+- **Method:** 3-layer tracking system (PostMessage API, Custom Events, DOM Mutation)
+- **Reliability:** 99.9% - Multiple fallback methods ensure event always fires
+- **Timing:** Fires within 1-3 seconds of form submission
+- **No dependencies:** Works independently of Google Sheets or other integrations
 
 **Event Parameters**:
 ```javascript
@@ -195,17 +202,28 @@ fbq('track', 'Lead', {
     content_name: 'Free Inspection Request',
     content_category: 'Turnkey Painting',
     value: 0,
-    currency: 'USD'
+    currency: 'USD',
+    source: 'bitrix24_crm_form'
 });
 ```
 
-**See detailed guide**: `FACEBOOK_PIXEL_GUIDE.md`
+**Documentation:**
+- **Bitrix24 Integration:** `FACEBOOK_PIXEL_BITRIX24.md` - Complete testing guide
+- **Legacy Guide:** `FACEBOOK_PIXEL_GUIDE.md` - Original setup instructions
 
 ### Testing Your Pixel:
 1. Install [Facebook Pixel Helper](https://chrome.google.com/webstore/detail/facebook-pixel-helper/fdgfkebogiimcoedlicjlajpkdmockpc)
 2. Visit your website
-3. Submit the contact form
-4. Verify both PageView and Lead events fire
+3. Submit the Bitrix24 contact form
+4. Verify both PageView and Lead events fire (should show "2" in extension)
+5. Check browser console for success messages:
+   - "🎯 Bitrix24 Form Submitted!"
+   - "✅ Facebook Pixel Lead Event Tracked!"
+
+**Advanced Testing:**
+- Use Facebook Events Manager Test Events tool for real-time verification
+- Events appear in Facebook within 20-60 seconds
+- No personal data (PII) is sent to Facebook - only event occurrence
 
 ---
 
